@@ -7,6 +7,8 @@ Just clone the repo and
 
 # TODO :
 
+- Bugged version : the bird can touch the poles !!!
+
 - Comment the code
 
 - draw new birds
