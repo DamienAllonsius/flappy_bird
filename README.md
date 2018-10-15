@@ -1,12 +1,16 @@
 # flappy_bird
 New game !! Flappy Bird
 
-- TODO :
+# How to install
+Just clone the repo and
+``` python3 main.py ```
 
--- Comment the code
+# TODO :
 
--- draw new birds
+- Comment the code
 
--- Multi-player
+- draw new birds
 
--- Bonus for birds
+- Multi-player
+
+- Bonus for birds
