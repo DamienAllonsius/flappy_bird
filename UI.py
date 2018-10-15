@@ -19,16 +19,16 @@ class UI:
         self.environment=Environment()
         self.label = None
         
-    def drawPlots(self):
-        for plot in self.environment.plots:
-            pygame.draw.rect(self.window,(255,255,255),(plot.xMin,0,plot.xMax-plot.xMin,plot.yMin))
-            pygame.draw.rect(self.window,(255,255,255),(plot.xMin,plot.yMax,plot.xMax-plot.xMin,self.height))
+    def drawPoles(self):
+        for pole in self.environment.poles:
+            pygame.draw.rect(self.window,(255,255,255),(pole.xMin,0,pole.xMax-pole.xMin,pole.yMin))
+            pygame.draw.rect(self.window,(255,255,255),(pole.xMin,pole.yMax,pole.xMax-pole.xMin,self.height))
 
     def drawAll(self):
         self.window.fill((0,0,0))
         self.window.blit(self.label, (self.width-700,self.height-fontsize))
         self.window.blit(self.birdImage,[self.bird.getPositionX(),self.bird.getPositionY()])
-        self.drawPlots()
+        self.drawPoles()
         pygame.display.flip()
                  
     def main(self):
@@ -41,10 +41,10 @@ class UI:
             self.environment.points+=1
             self.label =  myfont.render("Points = " + str(int(self.environment.points/self.environment.discountFactorPoints)) + "(Press [ESC] to quit, [UP] or [DOWN] to fly)",3 , (124,255,0))
 
-            # the plots
-            if np.mod(self.environment.points,self.environment.speedPlotsAppearing) ==0:
-                self.environment.makePlotRandom(self.width,self.height)
-            self.environment.movePlots()
+            # the poles
+            if np.mod(self.environment.points,self.environment.speedPolesAppearing) ==0:
+                self.environment.makePoleRandom(self.width,self.height)
+            self.environment.movePoles()
 
             self.drawAll()
             
