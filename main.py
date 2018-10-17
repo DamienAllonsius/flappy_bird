@@ -1,3 +1,5 @@
 from UI import *
 bird = Bird()
-UI(bird).main()
+bird2 = Bird(colorBall=(255,0,0))
+
+UI(bird,bird2).main()

@@ -14,7 +14,6 @@ class Environment:
         self.speedPolesMoving=speedPolesMoving
         self.poles=[]
         self.cont=1
-        self.points=0
 
         
     def makePoleRandom(self,width,height):
@@ -35,12 +34,7 @@ class Environment:
                 self.poles=self.poles[1:]
 
     def computeCont(self,x,y,h):
-        if(y<0 or y>h):
+        if(y<0 or y>h or (self.poles !=[] and ((x>self.poles[0].xMin) and (x<self.poles[0].xMax) and ((y<self.poles[0].yMin) or (y>self.poles[0].yMax))))):
             self.cont=0
-            
-        if self.poles !=[]:
-            if (x>self.poles[0].xMin) and (x<self.poles[0].xMax):
-                if (y<self.poles[0].yMin) or (y>self.poles[0].yMax):
-                    self.cont=0
-
-        
+        else:
+            self.cont+=1
