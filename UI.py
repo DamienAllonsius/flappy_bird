@@ -13,21 +13,27 @@ class UI:
 
         self.window=pygame.display.set_mode((0,0),pygame.FULLSCREEN)
         self.bird=bird
-        self.birdImage=pygame.image.load(self.bird.getPathBirdImage()).convert_alpha()
         self.width = pygame.display.Info().current_w
         self.height = pygame.display.Info().current_h
         self.environment=Environment()
         self.label = None
+        self.labelPointBird = None
         
     def drawPoles(self):
         for pole in self.environment.poles:
             pygame.draw.rect(self.window,(255,255,255),(pole.xMin,0,pole.xMax-pole.xMin,pole.yMin))
             pygame.draw.rect(self.window,(255,255,255),(pole.xMin,pole.yMax,pole.xMax-pole.xMin,self.height))
 
+
     def drawAll(self):
+        # set the black background color and the labels
         self.window.fill((0,0,0))
-        self.window.blit(self.label, (self.width-700,self.height-fontsize))
-        self.window.blit(self.birdImage,[self.bird.getPositionX(),self.bird.getPositionY()])
+        self.window.blit(self.label, (self.width-550,self.height-fontsize))
+        self.window.blit(self.labelPointBird, (0,self.height-fontsize))
+        # draw the birds
+        pygame.draw.circle(self.window,self.bird.colorBall,[int(self.bird.x),int(self.bird.y)],self.bird.radius)
+
+        # draw the poles
         self.drawPoles()
         pygame.display.flip()
                  
@@ -36,16 +42,21 @@ class UI:
         pygame.key.set_repeat(1,1)
         
         while(self.environment.cont):
+              # Number of points
+            self.label =  myfont.render("(Press [ESC] to quit, [UP] or [DOWN] to fly)",3 , (255,255,255))
+            self.labelPointBird =  myfont.render("Points = " + str(int(self.bird.points/self.environment.discountFactorPoints)),3 ,self.bird.colorBall)
+
+            # gravity
             
             k+=self.bird.weight
-            self.environment.points+=1
-            self.label =  myfont.render("Points = " + str(int(self.environment.points/self.environment.discountFactorPoints)) + "(Press [ESC] to quit, [UP] or [DOWN] to fly)",3 , (124,255,0))
+            self.bird.y=self.bird.y + self.environment.gravity*k
 
             # the poles
-            if np.mod(self.environment.points,self.environment.speedPolesAppearing) ==0:
+            if np.mod(self.environment.cont,self.environment.speedPolesAppearing) ==0:
                 self.environment.makePoleRandom(self.width,self.height)
             self.environment.movePoles()
 
+            # draw this state
             self.drawAll()
             
             self.bird.y=self.bird.y + self.environment.gravity*k
@@ -60,9 +71,8 @@ class UI:
                     if (event.key == pygame.K_ESCAPE):
                         cont=0
 
-            self.environment.computeCont(self.bird.getPositionX(),self.bird.getPositionY(),self.height)
-            
-        
-
-        
-        
+            # are you still alive bird ?
+            self.environment.computeCont(self.bird.x,self.bird.y,self.height)
+            # then you get points !
+            if (self.environment.cont):
+                self.bird.points+=1
