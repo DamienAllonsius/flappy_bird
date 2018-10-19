@@ -10,9 +10,10 @@ class Environment(object):
     which is 0 if the player lost"""
     def __init__(self, width, height):
         self.gravity = 1
-        self.time = 10
+        self.speed_pole_moving = 1
         self.discount_factor_points = 100
         self.speed_poles_appearing = 500
+        self.birds = [Bird()]
         self.poles = [Pole(width, height)] 
         self.cont = 1
 
@@ -29,7 +30,7 @@ class Environment(object):
 
     def birds_alive(self, height):
         """Refresh the status of birds (points + alive)"""
-        self.cont = 0
+        self.cont = 1
         for bird in self.birds:
             if bird.is_alive(height, self.poles[0]):
                 bird.points += 1

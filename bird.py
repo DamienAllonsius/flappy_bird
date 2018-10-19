@@ -1,15 +1,15 @@
 """This class represents the object 'Bird' that has to go through
 the holes represented by the space between to vertical plots
 (see the Plot class)."""
-
+import random
 class Bird(object):
     """The bird class which is now represented as a green ball.
     The Bird is drawn by the class UI."""
     def __init__(self):
         self.position = [150, 300]
-        self.weight = 0.001
-        self.color_ball = (0, 255, 0)
-        self.radius = 10
+        self.color_ball = (random.randrange(256), 120, random.randrange(256))
+        self.radius = random.randrange(10,25)
+        self.weight = 0.001 * self.radius/10
         self.points = 0
         self.move = 10
         self.alive = 1
@@ -41,6 +41,6 @@ class Bird(object):
 
     def is_alive(self, height, pole):
         """This method tells if the bird has hit a pole or the boundary"""
-        self.alive = self.position[1] < 0 or self.position[1] > height or \
-            ((self.position[0] > pole.x_min) and (self.position[0] < pole.x_max) \
-             and ((self.position[1] < pole.y_min) or (self.position[1] > pole.y_max)))
+        self.alive = self.position[1] > 0 and self.position[1] < height and \
+            ((self.position[0] > pole.position[0]) and (self.position[0] < pole.position[1]) \
+             and ((self.position[1] < pole.position[2]) or (self.position[1] > pole.position[3])))

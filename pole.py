@@ -12,13 +12,13 @@ class Pole(object):
         self.pole_height_max = 0.75
         # the hole between the two obstacles.
         self.pole_hole = 0.3
-        self.speed_pole_moving = 1
+        plot_height = random.randrange(int(height * self.pole_height_max))
         self.position = [width - random.randrange(1, int(width * self.pole_width_max)),
                          width,
-                         random.randrange(int(height * self.pole_height_max)),
-                         self.position[2] + height * self.pole_hole]
+                         plot_height,
+                         plot_height + height * self.pole_hole]
 
-    def move_pole(self):
+    def move_pole(self, speed_pole_moving):
         """This makes the pole move toward the bird"""
-        self.position[0] -= self.speed_pole_moving
-        self.position[1] -= self.speed_pole_moving
+        self.position[0] -= speed_pole_moving
+        self.position[1] -= speed_pole_moving
