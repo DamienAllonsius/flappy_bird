@@ -1,40 +1,36 @@
-from pole import *
+"""This class will deal with all the variables
+of the game environment:
+the bird, the poles, the points, the speed, gravity..."""
+from pole import Pole
+from bird import Bird
 
-class Environment:
+class Environment(object):
+    """This class make the poles appear and move.
+    It contains the variable cont
+    which is 0 if the player lost"""
+    def __init__(self, width, height):
+        self.gravity = 1
+        self.time = 10
+        self.discount_factor_points = 100
+        self.speed_poles_appearing = 500
+        self.poles = [Pole(width, height)] 
+        self.cont = 1
 
-    def __init__(self,gravity=10,time=10,moveup=4,discountFactorPoints=100,speedPolesAppearing=500,speedPolesMoving=1):
-        self.gravity=gravity
-        self.time=time
-        self.moveup=moveup
-        self.discountFactorPoints=discountFactorPoints
-        self.poleWidthMax=1/10
-        self.poleHeightMax=0.75
-        self.poleHole=0.3 #0.9 * la hauteur restante
-        self.speedPolesAppearing=speedPolesAppearing
-        self.speedPolesMoving=speedPolesMoving
-        self.poles=[]
-        self.cont=1
+    def move_poles(self):
+        """This method make the poles move and disappear
+        when they are behind the bird"""
+        for pole in self.poles:
+            pole.move_pole()
+        x_max_bird = 0
+        for bird in self.birds:
+            x_max_bird = max(x_max_bird, bird.position[0])
+        if self.poles[0].position[1] < x_max_bird:
+            self.poles = self.poles[1:]
 
-        
-    def makePoleRandom(self,width,height):
-        xMin=width-random.randrange(1,int(width*self.poleWidthMax))
-        xMax=width
-        yMin=random.randrange(int(height*self.poleHeightMax))
-        yMax=yMin + height*self.poleHole
-        self.poles.append(Pole(xMin,xMax,yMin,yMax))
-
-
-    def movePoles(self):
-        if self.poles !=[]:
-            for pole in self.poles:
-                pole.xMin-=1
-                pole.xMax-=1
-            
-            if self.poles[0].xMax==0:
-                self.poles=self.poles[1:]
-
-    def computeCont(self,x,y,h):
-        if(y<0 or y>h or (self.poles !=[] and ((x>self.poles[0].xMin) and (x<self.poles[0].xMax) and ((y<self.poles[0].yMin) or (y>self.poles[0].yMax))))):
-            self.cont=0
-        else:
-            self.cont+=1
+    def birds_alive(self, height):
+        """Refresh the status of birds (points + alive)"""
+        self.cont = 0
+        for bird in self.birds:
+            if bird.is_alive(height, self.poles[0]):
+                bird.points += 1
+                self.cont = 1
