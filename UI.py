@@ -84,7 +84,7 @@ class UI(object):
             
             # are you still alive bird ?
             self.environment.birds_alive(self.height)
-            
+
             # player moves 
             for event in pygame.event.get():
                 if (event.type == pygame.KEYDOWN):

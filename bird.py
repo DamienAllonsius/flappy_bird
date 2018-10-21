@@ -41,6 +41,6 @@ class Bird(object):
 
     def is_alive(self, height, pole):
         """This method tells if the bird has hit a pole or the boundary"""
-        self.alive = self.position[1] > 0 and self.position[1] < height and \
+        self.alive = not(self.position[1] < 0 or self.position[1] > height or \
             ((self.position[0] > pole.position[0]) and (self.position[0] < pole.position[1]) \
-             and ((self.position[1] < pole.position[2]) or (self.position[1] > pole.position[3])))
+             and ((self.position[1] < pole.position[2]) or (self.position[1] > pole.position[3]))))
