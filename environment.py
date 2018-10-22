@@ -17,11 +17,16 @@ class Environment(object):
         self.poles = [Pole(width, height)] 
         self.cont = 1
 
+    def create_poles(self,width,height):
+        """Create a new pole. Poles are generated during a
+        process coded in class UI"""
+        self.poles.append(Pole(width,height))
+        
     def move_poles(self):
         """This method make the poles move and disappear
         when they are behind the bird"""
         for pole in self.poles:
-            pole.move_pole()
+            pole.move_pole(self.speed_pole_moving)
         x_max_bird = 0
         for bird in self.birds:
             x_max_bird = max(x_max_bird, bird.position[0])

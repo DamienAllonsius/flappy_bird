@@ -6,7 +6,7 @@ from pygame.locals import *
 from environment import Environment
 
 pygame.init()
-fontsize = 20
+fontsize = 30
 myfont = pygame.font.SysFont("monospace", fontsize)
 
 
@@ -16,8 +16,8 @@ class UI(object):
     The game ends when all the birds are deads.
     Birds die when hitting a pole or the boundary of the environment"""
     def __init__(self):
-        #self.window = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-        self.window = pygame.display.set_mode((0,0))
+        self.window = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        #self.window = pygame.display.set_mode((0,0))
         self.width = pygame.display.Info().current_w
         self.height = pygame.display.Info().current_h
         self.environment = Environment(self.width,self.height)
@@ -43,19 +43,12 @@ class UI(object):
                                 int(bird.position[1])],
                                bird.radius)
     def draw_labels(self):
-        label = myfont.render(
-            "(Press [ESC] to quit, [UP] or [DOWN] to fly)",
-            3, (255, 255, 255))                        
-        self.window.blit(label,
-                         (self.width - 550, self.height - fontsize))
+        label = myfont.render("(Press [ESC] to quit, [UP] or [DOWN] to fly)", 3, (255, 255, 255))                        
+        self.window.blit(label, (self.width - 650, self.height -  fontsize))
         i = 0
         for bird in self.environment.birds:
-            label_points = myfont.render(
-                "Points = " +
-                str(int(bird.points / self.environment.discount_factor_points)),
-                3,
-                bird.color_ball)
-            self.window.blit(label_points, (i*fontsize, self.height - fontsize))
+            label_points = myfont.render("Points = " + str(int(bird.points / self.environment.discount_factor_points)), 3, bird.color_ball)
+            self.window.blit(label_points, (i*fontsize, self.height -  fontsize))
             i += 1.5
             
     def drawAll(self):
@@ -70,15 +63,18 @@ class UI(object):
     def main(self):
         """The main function where the rules and the dynamic of the game is implemented"""
         multiplicator_gravity = 0
-        pygame.key.set_repeat(1, 1)        
+        pygame.key.set_repeat(1, 1)
+        time=0
         while(self.environment.cont):
+            time += 1
             for bird in self.environment.birds:
                 multiplicator_gravity += bird.weight
                 bird.position[1] += self.environment.gravity * multiplicator_gravity
-            if np.mod(self.environment.cont,
-                      self.environment.speed_poles_appearing) == 0:
-                self.environment.poles.append(self.width, self.height)
-                self.environment.movePoles()
+                
+            
+            if np.mod(time, self.environment.speed_poles_appearing) == 0:
+                self.environment.create_poles(self.width,self.height)
+            self.environment.move_poles()
             self.drawAll()
 
             

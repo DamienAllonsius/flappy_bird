@@ -9,9 +9,9 @@ class Bird(object):
         self.position = [150, 300]
         self.color_ball = (random.randrange(256), 120, random.randrange(256))
         self.radius = random.randrange(10,25)
-        self.weight = 0.001 * self.radius/10
+        self.weight = 0.001 * self.radius/20
         self.points = 0
-        self.move = 10
+        self.move = 5
         self.alive = 1
 
     def take_action(self, pole_y_min, pole_y_max):
