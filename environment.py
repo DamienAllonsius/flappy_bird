@@ -14,14 +14,14 @@ class Environment(object):
         self.discount_factor_points = 100
         self.speed_poles_appearing = 500
         self.birds = [Bird()]
-        self.poles = [Pole(width, height)] 
+        self.poles = [Pole(width, height)]
         self.cont = 1
 
     def create_poles(self,width,height):
         """Create a new pole. Poles are generated during a
         process coded in class UI"""
         self.poles.append(Pole(width,height))
-        
+
     def move_poles(self):
         """This method make the poles move and disappear
         when they are behind the bird"""

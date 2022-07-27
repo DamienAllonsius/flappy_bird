@@ -21,7 +21,7 @@ class UI(object):
         self.width = pygame.display.Info().current_w
         self.height = pygame.display.Info().current_h
         self.environment = Environment(self.width,self.height)
-        
+
     def draw_poles(self):
         """Draw the poles contained in environment, by default in white"""
         for pole in self.environment.poles:
@@ -43,14 +43,14 @@ class UI(object):
                                 int(bird.position[1])],
                                bird.radius)
     def draw_labels(self):
-        label = myfont.render("(Press [ESC] to quit, [UP] or [DOWN] to fly)", 3, (255, 255, 255))                        
+        label = myfont.render("(Press [ESC] to quit, [UP] or [DOWN] to fly)", 3, (255, 255, 255))
         self.window.blit(label, (self.width - 650, self.height -  fontsize))
         i = 0
         for bird in self.environment.birds:
             label_points = myfont.render("Points = " + str(int(bird.points / self.environment.discount_factor_points)), 3, bird.color_ball)
             self.window.blit(label_points, (i*fontsize, self.height -  fontsize))
             i += 1.5
-            
+
     def drawAll(self):
         """Draw all the components of the game
         the black background color and the labels"""
@@ -59,7 +59,7 @@ class UI(object):
         self.draw_labels()
         self.draw_poles()
         pygame.display.flip()
-                 
+
     def main(self):
         """The main function where the rules and the dynamic of the game is implemented"""
         multiplicator_gravity = 0
@@ -70,18 +70,18 @@ class UI(object):
             for bird in self.environment.birds:
                 multiplicator_gravity += bird.weight
                 bird.position[1] += self.environment.gravity * multiplicator_gravity
-                
-            
+
+
             if np.mod(time, self.environment.speed_poles_appearing) == 0:
                 self.environment.create_poles(self.width,self.height)
             self.environment.move_poles()
             self.drawAll()
 
-            
+
             # are you still alive bird ?
             self.environment.birds_alive(self.height)
 
-            # player moves 
+            # player moves
             for event in pygame.event.get():
                 if (event.type == pygame.KEYDOWN):
                     if (event.key == K_UP):
@@ -92,5 +92,3 @@ class UI(object):
                         multiplicator_gravity = 0
                     if (event.key == pygame.K_ESCAPE):
                         self.environment.cont=0
-
-            
